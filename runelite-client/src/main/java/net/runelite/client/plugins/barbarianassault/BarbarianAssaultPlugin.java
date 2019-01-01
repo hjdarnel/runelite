@@ -35,6 +35,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.kit.KitType;
@@ -120,6 +121,39 @@ public class BarbarianAssaultPlugin extends Plugin
 			if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null)
 			{
 				announceTime("Game finished, duration: ", gameTime.getTime(false));
+			}
+		}
+	}
+
+	@Subscribe
+	public void onMenuOpen(MenuEntryAdded event)
+	{
+		if (config.removeWrong() && overlay.getCurrentRound() != null && event.getTarget().endsWith("horn"))
+		{
+			MenuEntry[] menuEntries = client.getMenuEntries();
+			WidgetInfo callInfo = overlay.getCurrentRound().getRoundRole().getCall();
+			Widget callWidget = client.getWidget(callInfo);
+			String call = Calls.getOption(callWidget.getText());
+			MenuEntry correctCall = null;
+
+			entries.clear();
+			for (MenuEntry entry : menuEntries)
+			{
+				String option = entry.getOption();
+				if (option.equals(call))
+				{
+					correctCall = entry;
+				}
+				else if (!option.startsWith("Tell-"))
+				{
+					entries.add(entry);
+				}
+			}
+
+			if (correctCall != null)
+			{
+				entries.add(correctCall);
+				client.setMenuEntries(entries.toArray(new MenuEntry[entries.size()]));
 			}
 		}
 	}
