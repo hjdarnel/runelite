@@ -33,6 +33,8 @@ import static net.runelite.client.ui.overlay.OverlayPosition.ABOVE_CHATBOX_RIGHT
 import static net.runelite.client.ui.overlay.OverlayPosition.BOTTOM_LEFT;
 import static net.runelite.client.ui.overlay.OverlayPosition.BOTTOM_RIGHT;
 import static net.runelite.client.ui.overlay.OverlayPosition.CANVAS_TOP_RIGHT;
+import static net.runelite.client.ui.overlay.OverlayPosition.LEFT;
+import static net.runelite.client.ui.overlay.OverlayPosition.RIGHT;
 import static net.runelite.client.ui.overlay.OverlayPosition.TOP_CENTER;
 import static net.runelite.client.ui.overlay.OverlayPosition.TOP_LEFT;
 import static net.runelite.client.ui.overlay.OverlayPosition.TOP_RIGHT;
@@ -41,10 +43,12 @@ import static net.runelite.client.ui.overlay.OverlayPosition.TOP_RIGHT;
 @Value
 class OverlayBounds
 {
-	private final Rectangle topLeft, topCenter, topRight, bottomLeft, bottomRight, aboveChatboxRight, canvasTopRight;
+	private final Rectangle left, right, topLeft, topCenter, topRight, bottomLeft, bottomRight, aboveChatboxRight, canvasTopRight;
 
 	OverlayBounds(OverlayBounds other)
 	{
+		left = new Rectangle(other.left);
+		right = new Rectangle(other.right);
 		topLeft = new Rectangle(other.topLeft);
 		topCenter = new Rectangle(other.topCenter);
 		topRight = new Rectangle(other.topRight);
@@ -57,6 +61,8 @@ class OverlayBounds
 	OverlayBounds translated(final int x, final int y)
 	{
 		final OverlayBounds translated = new OverlayBounds(this);
+		translated.getLeft().translate(0, y);
+		translated.getRight().translate(x, y);
 		translated.getTopRight().translate(x, 0);
 		translated.getTopCenter().translate(x / 2, 0);
 		translated.getBottomLeft().translate(0, y);
@@ -70,6 +76,10 @@ class OverlayBounds
 	{
 		switch (overlayPosition)
 		{
+			case LEFT:
+				return left;
+			case RIGHT:
+				return right;
 			case TOP_LEFT:
 				return topLeft;
 			case TOP_CENTER:
@@ -91,7 +101,15 @@ class OverlayBounds
 
 	OverlayPosition fromBounds(Rectangle bounds)
 	{
-		if (bounds == topLeft)
+		if (bounds == left)
+		{
+			return LEFT;
+		}
+		else if (bounds == right)
+		{
+			return RIGHT;
+		}
+		else if (bounds == topLeft)
 		{
 			return TOP_LEFT;
 		}
@@ -127,6 +145,6 @@ class OverlayBounds
 
 	Collection<Rectangle> getBounds()
 	{
-		return Arrays.asList(topLeft, topCenter, topRight, bottomLeft, bottomRight, aboveChatboxRight, canvasTopRight);
+		return Arrays.asList(left, right, topLeft, topCenter, topRight, bottomLeft, bottomRight, aboveChatboxRight, canvasTopRight);
 	}
 }

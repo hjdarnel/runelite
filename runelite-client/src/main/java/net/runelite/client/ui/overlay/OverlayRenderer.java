@@ -556,6 +556,14 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 
 	private OverlayBounds buildSnapCorners()
 	{
+		final Point leftPoint = new Point(
+				viewportOffset + BORDER,
+				viewportOffset + viewportBounds.height / 2);
+
+		final Point rightPoint = new Point(
+			viewportOffset + viewportBounds.width - BORDER,
+			viewportOffset + viewportBounds.height / 2);
+
 		final Point topLeftPoint = new Point(
 			viewportOffset + BORDER,
 			viewportOffset + BORDER_TOP);
@@ -591,7 +599,13 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			(int)client.getRealDimensions().getWidth(),
 			0) : topRightPoint;
 
+		final Point canvasRightPoint = isResizeable ? new Point(
+				(int)client.getRealDimensions().getWidth(),
+				0) : topRightPoint;
+
 		return new OverlayBounds(
+			new Rectangle(leftPoint, SNAP_CORNER_SIZE),
+			new Rectangle(rightPoint, SNAP_CORNER_SIZE),
 			new Rectangle(topLeftPoint, SNAP_CORNER_SIZE),
 			new Rectangle(topCenterPoint, SNAP_CORNER_SIZE),
 			new Rectangle(topRightPoint, SNAP_CORNER_SIZE),

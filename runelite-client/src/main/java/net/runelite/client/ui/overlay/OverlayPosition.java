@@ -35,6 +35,14 @@ public enum OverlayPosition
 	 */
 	DYNAMIC,
 	/**
+	 * Place overlay in the left viewport area
+	 */
+	LEFT,
+	/**
+	 * Place overlay in the right viewport area
+	 */
+	RIGHT,
+	/**
 	 * Place overlay in the top left viewport area
 	 */
 	TOP_LEFT,

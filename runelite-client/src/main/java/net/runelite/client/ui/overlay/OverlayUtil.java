@@ -25,6 +25,7 @@
 package net.runelite.client.ui.overlay;
 
 import com.google.common.base.Strings;
+import com.sun.org.apache.bcel.internal.generic.CASTORE;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -216,10 +217,12 @@ public class OverlayUtil
 				break;
 			case TOP_LEFT:
 			case TOP_CENTER:
+			case LEFT:
 				result.y += dimension.height + (dimension.height == 0 ? 0 : padding);
 				break;
 			case CANVAS_TOP_RIGHT:
 			case TOP_RIGHT:
+			case RIGHT:
 				result.y += dimension.height + (dimension.height == 0 ? 0 : padding);
 				break;
 			case ABOVE_CHATBOX_RIGHT:
@@ -239,6 +242,7 @@ public class OverlayUtil
 			case DYNAMIC:
 			case TOOLTIP:
 			case TOP_LEFT:
+			case LEFT:
 				break;
 			case TOP_CENTER:
 				result.x = result.x - dimension.width / 2;
@@ -248,6 +252,7 @@ public class OverlayUtil
 				break;
 			case BOTTOM_RIGHT:
 			case ABOVE_CHATBOX_RIGHT:
+			case RIGHT:
 				result.y = result.y - dimension.height;
 				// FALLTHROUGH
 			case CANVAS_TOP_RIGHT:
